@@ -1,35 +1,38 @@
 from pynput import keyboard
 class Logger:
-    menu = input("Press 1 to record Keys: \nPress 2 to see recorded Keys: \n")
 
+    #take in key and print out key
     def record(key):
         try:
             print(key.char)
+            keysave.append(key)
         except AttributeError:
             print(str(key)[4:])
+            keysave.append(str(key)[4:])
 
+    #recording stops when pressing esc
     def stopRecord(key):
         if key == keyboard.Key.esc:
             return False
-    
-    def saveRecording(recorded):
-        recordName = input("Enter name of saved file")
-        if recordName == None:
-            print("Name for file cannot be empty")
-        elif len(recordName) > 20:
-            print("Name for file is too long")
-        else: 
-            f = open(recordName, "x")
 
 print("Welcome to Keylogger Project")
 
+#input for menu selection
+menu = input("Press 1 to record Keys: \nPress 2 to see recorded Keys: \n")
+
+#list for keys saved
+keysave = []
+
 while True:
-    if  Logger.menu == "1":
+    #selection for recording
+    if  menu == "1":
         print("Recording... \nPress Esc to stop recording")
+        #joins both record and stopRecord
         with keyboard.Listener(on_press=Logger.record, on_release=Logger.stopRecord) as listener:
             listener.join()
+            print(keysave)
         break
-
+    #selection for record saving
     elif menu == "2":
         pass
     else:
