@@ -4,8 +4,9 @@ class Logger:
     #take in key, saves it and then prints out key
     def record(key):
         try:
-            keysave.append(key)
-            print(key.char)
+            if key != keyboard.Key.esc:
+                keysave.append(key)
+                print(key.char)
         except AttributeError:
             keysave.append(str(key)[4:])
             print(str(key)[4:])
