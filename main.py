@@ -1,5 +1,7 @@
 from pynput import keyboard
+from pynput.keyboard import Controller
 import os
+import ast
 class Logger:
 
     #take in key, saves it and then prints out key
@@ -9,7 +11,7 @@ class Logger:
                 keysave.append(key)
                 print(key.char)
         except AttributeError:
-            keysave.append(str(key)[4:])
+            keysave.append(key)
             print(str(key)[4:])
 
     #recording stops when pressing esc
@@ -24,11 +26,6 @@ class Logger:
             listener.join()
             print(keysave)
             Logger.createSave(keysave)
-
-    #list the files of keylogs in folder keys
-    def listKeys():
-        os.chdir("keys")
-        print(os.listdir())
     
     def createSave(keysave):
         #selection to save
@@ -38,7 +35,6 @@ class Logger:
                 name = input("Enter name for the file: \n")
                 #saves file
                 try:
-                    os.chdir("keys")
                     save = open(name, "x")
                     save.write(str(keysave))
                     save.close()
@@ -50,11 +46,32 @@ class Logger:
             if sel.upper() == "N":
                 break
     
-    def playKeys(file):
-        pass
+    #list the files of keylogs in folder keys
+    def listKeys():
+        print(os.listdir())
 
+    #opens up the file you choose and plays keylog
+    def playKeys():
+        keyCont = Controller()
+        while True:
+            select = input("Select file to open\n")
+            try:
+                #opens file and reads it then converts to a list and plays each key
+                key = open(select, "r")
+                keys = ast.literal_eval(key.read())
+                for x in keys:
+                    keyCont.press(x)
+                    keyCont.release(x)
+                key.close()
+                break
+            except BaseException as err:
+                print(err)
 
+#menu title     
 print("Welcome to Keylogger Project")
+
+#selecting directory to keys folder
+os.chdir("keys")
 
 #input for menu selection
 menu = input("Press 1 to record Keys: \nPress 2 to see recorded Keys: \n")
@@ -70,10 +87,8 @@ while True:
     #selection for record saving
     elif menu == "2":
         Logger.listKeys()
-        playKeys(file)
+        Logger.playKeys()
         break
     else:
         print("Incorrect Number. Please choose a number from the selection.")
         menu = input("Press 1 to record Keys: \nPress 2 to see recorded Keys: \n")
-
-    
