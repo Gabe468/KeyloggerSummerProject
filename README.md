@@ -1,2 +1,0 @@
-# KeyloggerSummerProject
-Summer II Project
